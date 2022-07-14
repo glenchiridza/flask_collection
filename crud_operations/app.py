@@ -2,6 +2,18 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
+all_posts = [
+    {
+        'title': 'Post1',
+        'content': 'We have post 1 content here',
+        'author':'Glen Chiridza'
+    },
+    {
+        'title': 'Post2',
+        'content': 'We have post 2 content here'
+    }
+]
+
 
 @app.route('/')
 @app.route('/home/')
@@ -11,7 +23,7 @@ def index():
 
 @app.route('/posts/')
 def posts():
-    return render_template('posts.html')
+    return render_template('posts.html',posts=all_posts)
 
 
 if __name__ == "__main__":

@@ -6,4 +6,16 @@
 
 {%block body %}
 <h1>All Posts</h1>
+
+
+{% for post in posts %}
+    <h2>{{post.title}} </h2>
+    <p>{{post.content}}</p>
+    {% if post.author %}
+    <p>Author: {{post.author}}</p>
+    {% else %}
+    <p>Author: N/A</p>
+    {% endif %}
+{% endfor %}
+
 {% endblock %}
