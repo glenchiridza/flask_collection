@@ -33,13 +33,17 @@ class BlogPost(db.Model):
 @app.route('/')
 @app.route('/home/')
 def index():
-    if request.method == 'POST':
-
     return render_template('index.html')
 
 
 @app.route('/posts/',methods=['GET','POST'])
 def posts():
+    if request.method == 'POST':
+        post_title = request.form['title']
+        post_content = request.form['content']
+        new_post = BlogPost(title=post_title, content=post_content, author='Glen')
+        db.session.add(new_post)
+        db.session.commit()
     return render_template('posts.html', posts=all_posts)
 
 
