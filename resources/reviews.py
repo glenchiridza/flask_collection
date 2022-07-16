@@ -92,8 +92,9 @@ class Review(Resource):
         )
         super().__init__()
 
+    @marshal_with(review_fields)
     def get(self, id):
-        return jsonify({'course': 1, 'rating': 5})
+        return add_course(review_or_404(id))
 
     def put(self, id):
         return jsonify({'course': 1, 'rating': 5})
