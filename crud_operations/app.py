@@ -27,7 +27,7 @@ class BlogPost(db.Model):
     date_posted = db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
 
     def __repr__(self):
-        return self.title
+        return f'Blog post == {self.title}'
 
 
 @app.route('/')
@@ -36,7 +36,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/posts/')
+@app.route('/posts/',methods=['GET','POST'])
 def posts():
     return render_template('posts.html', posts=all_posts)
 

@@ -6,7 +6,18 @@
 {% endblock %}
 
 {% block content %}
-<h1>All Posts</h1>
+<hr/>
+<h1>Create New Post</h1>
+<form action="/posts" method="post">
+    Title: <input type="text" name="title" id="title">
+    <br>
+    Content: <input type="" name="content" id="content">
+    <br>
+    <input type="submit" value="Post">
+</form>
+<hr/>
+
+<h2>All Posts</h2>
 
 
 {% for post in posts %}
