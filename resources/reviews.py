@@ -3,6 +3,14 @@ from flask_restful import Resource, Api, reqparse, inputs, fields
 
 import models
 
+review_fields = {
+    'id': fields.Integer,
+    'for_course': fields.String,
+    'rating': fields.Integer,
+    'comment': fields.String(default=''),
+    'create_on': fields.DateTime
+}
+
 
 class ReviewList(Resource):
     def __init__(self):
