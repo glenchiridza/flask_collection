@@ -11,7 +11,9 @@
 <form action="/posts/" method="post">
     Title: <input type="text" name="title" id="title">
     <br>
-    Content: <input type="" name="content" id="content">
+    Author: <input type="text" name="author" id="author">
+    <br>
+    Content: <input type="text" name="content" id="content">
     <br>
     <input type="submit" value="Post">
 </form>
@@ -24,10 +26,13 @@
     <h2>{{post.title}} </h2>
     <p>{{post.content}}</p>
     {% if post.author %}
-    <p>Author: {{post.author}}</p>
+<p>Author:<b>{{post.author}}</b> </p>
+
     {% else %}
     <p>Author: N/A</p>
     {% endif %}
+    <a href="">Delete</a> || <a href="">Update</a>
 {% endfor %}
+
 
 {% endblock %}
