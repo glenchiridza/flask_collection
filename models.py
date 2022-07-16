@@ -1,5 +1,5 @@
 import datetime
-
+from argon2 import PasswordHasher
 # peewee is an Object Relational Mapper that turns your model objects into rows in your database
 from peewee import *
 
