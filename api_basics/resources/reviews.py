@@ -2,12 +2,12 @@ from flask import jsonify
 from flask_restful import Resource
 
 
-class CourseList(Resource):
+class ReviewList(Resource):
     def get(self):
         return jsonify({'courses': [{'title': 'API basics'}]})
 
 
-class Course(Resource):
+class Review(Resource):
     def get(self, id):
         return jsonify({'title': 'API basics'})
 
