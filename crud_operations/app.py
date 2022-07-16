@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -33,6 +33,8 @@ class BlogPost(db.Model):
 @app.route('/')
 @app.route('/home/')
 def index():
+    if request.method == 'POST':
+
     return render_template('index.html')
 
 
