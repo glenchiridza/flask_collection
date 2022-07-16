@@ -1,4 +1,4 @@
-from flask import jsonify, Blueprint, url_for,abort
+from flask import jsonify, Blueprint, url_for, abort
 from flask_restful import (Resource, Api, reqparse, inputs, fields,
                            marshal, marshal_with)
 
@@ -17,14 +17,14 @@ course_fields = {
     'reviews': fields.List(fields.String)
 }
 
+
 def course_or_404(course_id):
     try:
-        course = models.Course.get(models.Course.id==course_id)
+        course = models.Course.get(models.Course.id == course_id)
     except models.Course.DoesNotExist:
         abort(404)
     else:
         return course
-
 
 
 def add_reviews(course):
@@ -59,8 +59,8 @@ class CourseList(Resource):
 
     def post(self):
         args = self.reqparse.parse_args()
-        models.Course.create(**args)
-        return jsonify({'courses': [{'title': 'API basics'}]})
+        course = models.Course.create(**args)
+        return add_reviews(course)
 
 
 class Course(Resource):
