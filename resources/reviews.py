@@ -1,7 +1,8 @@
 from flask import jsonify, Blueprint
-from flask_restful import Resource, Api,reqparse,inputs
+from flask_restful import Resource, Api, reqparse, inputs, fields
 
 import models
+
 
 class ReviewList(Resource):
     def __init__(self):
@@ -10,24 +11,25 @@ class ReviewList(Resource):
             'course',
             required=True,
             help='course must be provided',
-            location=['form','json']
+            location=['form', 'json'],
+            type=inputs.positive
         )
         self.reqparse.add_argument(
             'rating',
             required=True,
             help='please provide rating',
-            location=['form','json'],
-            type=inputs.int_range(1,5)
+            location=['form', 'json'],
+            type=inputs.int_range(1, 5)
         )
         self.reqparse.add_argument(
             'comment',
             required=False,
             nullable=True,
             default='',
-            location=['form','json']
+            location=['form', 'json']
         )
         super(ReviewList, self).__init__()
-        
+
     def get(self):
         return jsonify({'reviews': [{'course': 1, 'rating': 5}]})
 
@@ -45,24 +47,25 @@ class Review(Resource):
             'course',
             required=True,
             help='course must be provided',
-            location=['form','json']
+            location=['form', 'json'],
+            type=inputs.positive
         )
         self.reqparse.add_argument(
             'rating',
             required=True,
             help='please provide rating',
-            location=['form','json'],
-            type=inputs.int_range(1,5)
+            location=['form', 'json'],
+            type=inputs.int_range(1, 5)
         )
         self.reqparse.add_argument(
             'comment',
             required=False,
             nullable=True,
             default='',
-            location=['form','json']
+            location=['form', 'json']
         )
         super().__init__()
-        
+
     def get(self, id):
         return jsonify({'course': 1, 'rating': 5})
 
