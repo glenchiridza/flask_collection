@@ -11,7 +11,6 @@ app = Flask(__name__)
 app.register_blueprint(courses_api)
 
 
-
 @app.route('/')
 def index():
     return 'this is home'
