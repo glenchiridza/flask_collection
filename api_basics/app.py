@@ -1,5 +1,7 @@
 from flask import Flask
 
+from . import models
+
 DEBUG = True
 HOST = '0.0.0.0'
 PORT = 8000
@@ -13,4 +15,5 @@ def index():
 
 
 if __name__ == "__main__":
+    models.initialize()
     app.run(debug=DEBUG, host=HOST, port=PORT)
