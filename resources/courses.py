@@ -57,10 +57,12 @@ class CourseList(Resource):
                    for course in models.Course.select()]  # retreive all
         return {'courses': courses}
 
+    @marshal_with(course_fields)
     def post(self):
         args = self.reqparse.parse_args()
         course = models.Course.create(**args)
-        return add_reviews(course)
+        return (add_reviews(course), 201,
+                {'location': url_for('resources.courses.course', id=course.id)})
 
 
 class Course(Resource):
@@ -94,7 +96,10 @@ class Course(Resource):
                 {'location': url_for('resources.courses.course', id=id)})
 
     def delete(self, id):
-        return jsonify({'title': 'API basics'})
+        query = models.Course.delete().where(models.Course.id == id)
+        query.execute()
+        return ('', 204,
+                {'locations': url_for('resources.courses.courses')})
 
 
 courses_api = Blueprint('resources.courses', __name__)
