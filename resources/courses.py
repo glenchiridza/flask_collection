@@ -1,6 +1,7 @@
 from flask import jsonify, Blueprint
 from flask_restful import Resource, Api, reqparse,inputs
 
+import models
 
 class CourseList(Resource):
     def __init__(self):
@@ -26,14 +27,33 @@ class CourseList(Resource):
 
     def post(self):
         args = self.reqparse.parse_args()
+        models.Course.create(**args)
         return jsonify({'courses': [{'title': 'API basics'}]})
 
 
 class Course(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument(
+            'title',
+            required=True,
+            help='course title is required',
+            location =['form','json']
+        )
+        self.reqparse.add_argument(
+            'url',
+            required=True,
+            help='course url is required',
+            location = ['form','json'],
+            type=inputs.url
+        )
+        super().__init__()
+
     def get(self, id):
         return jsonify({'title': 'API basics'})
 
     def put(self, id):
+
         return jsonify({'title': 'API basics'})
 
     def delete(self, id):
