@@ -1,5 +1,6 @@
-from flask import jsonify, Blueprint
-from flask_restful import Resource, Api, reqparse,inputs,fields
+from flask import jsonify, Blueprint, url_for
+from flask_restful import (Resource, Api, reqparse, inputs, fields,
+                           marshal, marshal_with)
 
 import models
 
@@ -15,6 +16,12 @@ course_fields = {
     # but rather we jus want to get the url that was saved in db
     'reviews': fields.List(fields.String)
 }
+
+
+def add_reviews(course):
+    course.reviews = [url_for('resources.reviews.review', id=review.id)
+                      for review in course.review_set]
+    return course
 
 
 class CourseList(Resource):
@@ -37,7 +44,9 @@ class CourseList(Resource):
         super().__init__()  # make sure the standard setup goes ahead and happen
 
     def get(self):
-        return jsonify({'courses': [{'title': 'API basics'}]})
+        courses = [marshal(add_reviews(course), course_fields)
+                   for course in models.Course.select()]  # retreive all
+        return {'courses': courses}
 
     def post(self):
         args = self.reqparse.parse_args()
@@ -52,13 +61,13 @@ class Course(Resource):
             'title',
             required=True,
             help='course title is required',
-            location =['form','json']
+            location=['form', 'json']
         )
         self.reqparse.add_argument(
             'url',
             required=True,
             help='course url is required',
-            location = ['form','json'],
+            location=['form', 'json'],
             type=inputs.url
         )
         super().__init__()
@@ -67,7 +76,6 @@ class Course(Resource):
         return jsonify({'title': 'API basics'})
 
     def put(self, id):
-
         return jsonify({'title': 'API basics'})
 
     def delete(self, id):
