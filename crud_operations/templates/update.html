@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<title>Posts</title>
+{% endblock %}
+
+{% block content %}
+<hr/>
+<h1>Create New Post</h1>
+<form action="/posts/" method="post">
+    Title: <input type="text" name="title" id="title" value="{{post.title}}">
+    <br>
+    Author: <input type="text" name="author" id="author" value="{{post.author}}">
+    <br>
+    Content: <input type="text" name="content" id="content" value="{{post.content}}">
+    <br>
+    <input type="submit" value="Update">
+</form>
+<hr/>
+
+
+
+{% endblock %}
