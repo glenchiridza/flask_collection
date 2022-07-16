@@ -1,8 +1,10 @@
 from flask import jsonify,Blueprint
-from flask_restful import Resource,Api
+from flask_restful import Resource,Api, reqparse
 
 
 class CourseList(Resource):
+    def __init__(self):
+
     def get(self):
         return jsonify({'courses': [{'title': 'API basics'}]})
 
