@@ -1,6 +1,7 @@
 from flask import jsonify, Blueprint
 from flask_restful import Resource, Api,reqparse,inputs
 
+import models
 
 class ReviewList(Resource):
     def __init__(self):
@@ -28,6 +29,12 @@ class ReviewList(Resource):
         super(ReviewList, self).__init__()
         
     def get(self):
+        return jsonify({'reviews': [{'course': 1, 'rating': 5}]})
+
+    def post(self):
+        args = self.reqparse.parse_args()
+        # the arguments are parsed and output as dictionary
+        models.Review.create(**args)
         return jsonify({'reviews': [{'course': 1, 'rating': 5}]})
 
 
