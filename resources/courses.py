@@ -1,4 +1,4 @@
-from flask import jsonify, Blueprint, url_for
+from flask import jsonify, Blueprint, url_for,abort
 from flask_restful import (Resource, Api, reqparse, inputs, fields,
                            marshal, marshal_with)
 
@@ -16,6 +16,15 @@ course_fields = {
     # but rather we jus want to get the url that was saved in db
     'reviews': fields.List(fields.String)
 }
+
+def course_or_404(course_id):
+    try:
+        course = models.Course.get(models.Course.id==course_id)
+    except models.Course.DoesNotExist:
+        abort(404, message="Course {} does not exist".format(course_id))
+    else:
+        return course
+
 
 
 def add_reviews(course):
@@ -72,8 +81,9 @@ class Course(Resource):
         )
         super().__init__()
 
+    @marshal_with(course_fields)
     def get(self, id):
-        return jsonify({'title': 'API basics'})
+        return add_reviews(course_or_404(id))
 
     def put(self, id):
         return jsonify({'title': 'API basics'})
