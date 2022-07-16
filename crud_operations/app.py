@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_bootstrap import Bootstrap
 from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 db = SQLAlchemy(app)
+bootstrap = Bootstrap(app)
 
 all_posts = [
     {
@@ -58,7 +60,8 @@ def delete(id):
     db.session.commit()
     return redirect('/posts/')
 
-@app.route('/posts/update/<int:id>', methods=['GET','POST'])
+
+@app.route('/posts/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
     post = BlogPost.query.get_or_404(id)
 
@@ -69,7 +72,7 @@ def update(id):
         db.session.commit()
         return redirect('/posts/')
     else:
-        return render_template('update.html')
+        return render_template('update.html',post=post)
 
 
 if __name__ == "__main__":
