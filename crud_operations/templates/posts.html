@@ -1,40 +1,44 @@
 {% extends 'base.html' %}
-% extends 'bootstrap/base.html' %}
 
 
 {% block head %}
+<div class="container">
 <title>Posts</title>
 {% endblock %}
 
 {% block content %}
 <hr/>
-<h1>Create New Post</h1>
+<h1>New Post</h1>
 <form action="/posts/" method="post">
-    Title: <input type="text" name="title" id="title">
+    Title:<br/> <input type="text" name="title" id="title">
     <br>
-    Author: <input type="text" name="author" id="author">
+    Author:<br/> <input type="text" name="author" id="author">
     <br>
-    Content: <input type="text" name="content" id="content">
+    Content:<br/> <input type="text" name="content" id="content">
     <br>
-    <input type="submit" value="Post">
+    <input type="submit" class="btn btn-primary" value="Post">
 </form>
 <hr/>
 
 <h2>All Posts</h2>
 
+    {% for post in posts %}
 
-{% for post in posts %}
-    <h2>{{post.title}} </h2>
-    <p>{{post.content}}</p>
-    {% if post.author %}
-<p>Author:<b>{{post.author}}</b> </p>
+<div class="post">
+        <h2>{{post.title}} </h2>
+        <p>{{post.content}}</p>
+        {% if post.author %}
+    <p>Author:<b>{{post.author}}</b> </p>
 
-    {% else %}
-    <p>Author: N/A</p>
-    {% endif %}
-    <a href="/posts/delete/{{post.id}}">Delete</a> ||
-    <a href="/posts/update/{{post.id}}">Update</a>
-{% endfor %}
+        {% else %}
+        <p>Author: N/A</p>
+        {% endif %}
+        <a href="/posts/delete/{{post.id}}" class="btn-del">Delete</a> ||
+        <a href="/posts/update/{{post.id}}" class="btn-save">Update</a>
 
+</div>
+    {% endfor %}
+
+</div>
 
 {% endblock %}

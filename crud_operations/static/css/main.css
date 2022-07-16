@@ -1,3 +1,22 @@
 body{
     background:#eeeeee;
 }
+
+.post{
+    border:1px solid #000;
+    margin:10px;
+    padding: 20px;
+}
+.btn-del{
+    background:red;
+    padding:10px;
+}
+.btn-save{
+    background:#5bc0de;
+    padding:10px;
+}
+
+input{
+padding:10px;
+
+}

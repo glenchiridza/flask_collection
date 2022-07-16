@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-% extends 'bootstrap/base.html' %}
 
 
 {% block head %}
@@ -10,13 +9,13 @@
 <hr/>
 <h1>Create New Post</h1>
 <form action="/posts/update/{{post.id}}" method="post">
-    Title: <input type="text" name="title" id="title" value="{{post.title}}">
+    Title:<br/> <input type="text" name="title" id="title" value="{{post.title}}">
     <br>
-    Author: <input type="text" name="author" id="author" value="{{post.author}}">
+    Author:<br/> <input type="text" name="author" id="author" value="{{post.author}}">
     <br>
-    Content: <input type="text" name="content" id="content" value="{{post.content}}">
+    Content:<br/> <input type="text" name="content" id="content" value="{{post.content}}">
     <br>
-    <input type="submit" value="Update">
+    <input type="submit" value="Update" class="btn-save">
 </form>
 <hr/>
 
