@@ -22,12 +22,18 @@ class UserList(Resource):
             help='email is required',
             location=['form', 'json']
         )
-        # self.reqparse.add_argument(
-        #     'password',
-        #     required=True,
-        #     help='password is required',
-        #     location=['form','json']
-        # )
+        self.reqparse.add_argument(
+            'password',
+            required=True,
+            help='password is required',
+            location=['form','json']
+        )
+        self.reqparse.add_argument(
+            'verify_password',
+            required=True,
+            help='password verification is required',
+            location=['form', 'json']
+        )
         super(UserList, self).__int__()
 
 
