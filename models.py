@@ -52,6 +52,7 @@ class Review(Model):
     rating = IntegerField()
     comment = TextField(default='')
     created_at = DateTimeField(default=datetime.datetime.now)
+    created_by = ForeignKeyField(User,related_name='review_set')
 
     class Meta:
         database = DATABASE
@@ -59,6 +60,6 @@ class Review(Model):
 
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([Course, Review], safe=True)  # safe=True is so that it jus passes if those tables already
+    DATABASE.create_tables([User,Course, Review], safe=True)  # safe=True is so that it jus passes if those tables already
     # exist in DB instead of error
     DATABASE.close()

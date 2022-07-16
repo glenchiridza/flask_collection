@@ -1,5 +1,10 @@
 from flask import Blueprint
-from flask_restful import Resource,Api,reqparse,inputs
+from flask_restful import (Resource, Api, reqparse, inputs,
+                           fields, marshal_with, marshal, url_for)
+
+user_fields = {
+    'username': fields.String,
+}
 
 
 class UserList(Resource):
@@ -9,13 +14,13 @@ class UserList(Resource):
             'username',
             required=True,
             help='username is required',
-            location=['form','json']
+            location=['form', 'json']
         )
         self.reqparse.add_argument(
             'email',
             required=True,
             help='email is required',
-            location=['form','json']
+            location=['form', 'json']
         )
         # self.reqparse.add_argument(
         #     'password',
@@ -26,7 +31,7 @@ class UserList(Resource):
         super(UserList, self).__int__()
 
 
-users_api = Blueprint('resources.users',__name__)
+users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
 api.add_resource(
     UserList,
