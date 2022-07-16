@@ -1,9 +1,24 @@
-from flask import jsonify,Blueprint
-from flask_restful import Resource,Api, reqparse
+from flask import jsonify, Blueprint
+from flask_restful import Resource, Api, reqparse
 
 
 class CourseList(Resource):
     def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument(
+            'title',
+            required=True,
+            help='course title must be provided',
+            location=['form', 'json'],  # look for data in form encoded or json encoded data,
+
+        )
+        self.reqparse.add_argument(
+            'url',
+            required=True,
+            help='course url must be provided',
+            location=['form', 'json']
+        )
+        super().__init__()  # make sure the standard setup goes ahead and happen
 
     def get(self):
         return jsonify({'courses': [{'title': 'API basics'}]})
@@ -20,7 +35,7 @@ class Course(Resource):
         return jsonify({'title': 'API basics'})
 
 
-courses_api = Blueprint('resources.courses',__name__)
+courses_api = Blueprint('resources.courses', __name__)
 api = Api(courses_api)
 api.add_resource(
     CourseList,
