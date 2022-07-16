@@ -1,6 +1,6 @@
 from flask import Flask
 
-from api_basics import models
+import models
 
 DEBUG = True
 HOST = '0.0.0.0'

@@ -6,7 +6,7 @@ python app.py
 using flask_framework
 
 ## API Basics
-make sure you in api_basics directory
+make sure you in flask_collection directory
 
 #start app
 python app.py
