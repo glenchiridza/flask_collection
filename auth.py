@@ -1,10 +1,12 @@
 from flask import g
-from flask_httpauth import HTTPBasicAuth
+from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth, MultiAuth
 
 import models
 
 basic_auth = HTTPBasicAuth()
-auth = basic_auth
+token_auth = HTTPTokenAuth(scheme='Token')  # scheme is like a domain where it applies, in this case its Token
+auth = MultiAuth(token_auth,
+                 basic_auth)  # multi auth can take any number of auth types but it looks at the first thing, and then the next
 
 
 @basic_auth.verify_password
