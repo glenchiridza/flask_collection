@@ -1,4 +1,6 @@
-from flask import jsonify, Blueprint, abort, url_for
+import json
+
+from flask import jsonify, Blueprint, abort, url_for, g, make_response
 from flask_restful import (Resource, Api, reqparse, inputs, fields,
                            marshal, marshal_with)
 from auth import auth
@@ -63,7 +65,10 @@ class ReviewList(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         # the arguments are parsed and output as dictionary
-        review = models.Review.create(**args)
+        review = models.Review.create(
+            created_by=g.user,
+            **args
+        )
         return add_course(review)
 
 
@@ -97,10 +102,21 @@ class Review(Resource):
     def get(self, id):
         return add_course(review_or_404(id))
 
+    @marshal_with(review_fields)
     @auth.login_required
     def put(self, id):
         args = self.reqparse.parse_args()
-        review = review_or_404(id)
+        try:
+            review = models.Review.select().where(
+                models.Review.created_by == g.user,
+                models.Review.id == id
+            ).get()
+        except models.Review.DoesNotExist:
+            return make_response(
+                json.dumps({
+                    'error': 'you have no permission to edit here'
+                }),403
+            )
         query = review.update(**args)
         query.execute()
         review = add_course(review_or_404(id))
@@ -109,7 +125,10 @@ class Review(Resource):
 
     @auth.login_required
     def delete(self, id):
-        return jsonify({'course': 1, 'rating': 5})
+        review = review_or_404(id)
+        query = review.delete()
+        review.execute()
+        return '', 204, {'location': url_for('resources.reviews.reviews')}
 
 
 reviews_api = Blueprint("resources.reviews", __name__)
