@@ -1,7 +1,7 @@
 from flask import jsonify, Blueprint, abort, url_for
 from flask_restful import (Resource, Api, reqparse, inputs, fields,
-                           marshal,marshal_with)
-
+                           marshal, marshal_with)
+from auth import auth
 import models
 
 review_fields = {
@@ -54,11 +54,12 @@ class ReviewList(Resource):
         super(ReviewList, self).__init__()
 
     def get(self):
-        return {'reviews':[
-            marshal(add_course(review),review_fields)
+        return {'reviews': [
+            marshal(add_course(review), review_fields)
             for review in models.Review.select()
         ]}
 
+    @auth.login_required
     def post(self):
         args = self.reqparse.parse_args()
         # the arguments are parsed and output as dictionary
@@ -96,9 +97,17 @@ class Review(Resource):
     def get(self, id):
         return add_course(review_or_404(id))
 
+    @auth.login_required
     def put(self, id):
-        return jsonify({'course': 1, 'rating': 5})
+        args = self.reqparse.parse_args()
+        review = review_or_404(id)
+        query = review.update(**args)
+        query.execute()
+        review = add_course(review_or_404(id))
+        return (review, 200,
+                {'location': url_for('resources.reviews.review', id=id)})
 
+    @auth.login_required
     def delete(self, id):
         return jsonify({'course': 1, 'rating': 5})
 
