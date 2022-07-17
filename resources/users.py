@@ -1,6 +1,6 @@
 import json
 
-from flask import Blueprint, make_response
+from flask import jsonify,Blueprint, make_response
 from flask_restful import (Resource, Api, reqparse,inputs,
                            fields, marshal_with, marshal, url_for)
 
@@ -12,33 +12,33 @@ user_fields = {
 
 
 class UserList(Resource):
-    def __int__(self):
+    def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument(
             'username',
             required=True,
-            help='username is required',
+            help='No username provided',
             location=['form', 'json']
         )
         self.reqparse.add_argument(
             'email',
             required=True,
-            help='email is required',
+            help='No email provided',
             location=['form', 'json']
         )
         self.reqparse.add_argument(
             'password',
             required=True,
-            help='password is required',
+            help='No password provided',
             location=['form', 'json']
         )
         self.reqparse.add_argument(
             'verify_password',
             required=True,
-            help='password verification is required',
+            help='No password verification provided',
             location=['form', 'json']
         )
-        super().__int__()
+        super().__init__()
 
     def post(self):
         args = self.reqparse.parse_args()
