@@ -3,7 +3,7 @@ from argon2 import PasswordHasher
 # peewee is an Object Relational Mapper that turns your model objects into rows in your database
 from peewee import *
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer,
-                         BadSignature, SignatureExpired)
+                          BadSignature, SignatureExpired)
 
 import config
 
@@ -20,14 +20,14 @@ class User(Model):
         database = DATABASE
 
     @classmethod
-    def create_user(cls,username,email,password,**kwargs):
+    def create_user(cls, username, email, password, **kwargs):
         email = email.lower()
         try:
             cls.select().where(
-                (cls.email**email)|(cls.username**username)
+                (cls.email ** email) | (cls.username ** username)
             ).get()
         except cls.DoesNotExist:
-            user = cls(username=username,email=email)
+            user = cls(username=username, email=email)
             user.password = user.set_password(password)
             user.save()
             return user
@@ -42,15 +42,20 @@ class User(Model):
         except (SignatureExpired, BadSignature):
             return None
         else:
-            user = User.get(User.id==data['id'])
+            user = User.get(User.id == data['id'])
+            return user
 
     @staticmethod
     def set_password(password):
         return HASHER.hash(password)
 
-    def verify_password(self,password):
-        return HASHER.verify(self.password,password)
+    def verify_password(self, password):
+        return HASHER.verify(self.password, password)
 
+    def generate_auth_token(self, expires=3600):
+        serializer = Serializer(config.SECRET_KEY,
+                                expires_in=expires)
+        return serializer.dumps({'id': self.id})  # this is the ID of the user its being called on
 
 
 class Course(Model):
@@ -67,7 +72,7 @@ class Review(Model):
     rating = IntegerField()
     comment = TextField(default='')
     created_at = DateTimeField(default=datetime.datetime.now)
-    created_by = ForeignKeyField(User,related_name='review_set')
+    created_by = ForeignKeyField(User, related_name='review_set')
 
     class Meta:
         database = DATABASE
@@ -75,6 +80,7 @@ class Review(Model):
 
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([User,Course, Review], safe=True)  # safe=True is so that it jus passes if those tables already
+    DATABASE.create_tables([User, Course, Review],
+                           safe=True)  # safe=True is so that it jus passes if those tables already
     # exist in DB instead of error
     DATABASE.close()
