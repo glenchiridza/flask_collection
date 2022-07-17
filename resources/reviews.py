@@ -125,9 +125,19 @@ class Review(Resource):
 
     @auth.login_required
     def delete(self, id):
-        review = review_or_404(id)
+        try:
+            review = models.Review.select().where(
+                models.Review.created_by == g.user,
+                models.Review.id == id
+            ).get()
+        except models.Review.DoesNotExist:
+            return make_response(
+                json.dumps({
+                    'error': 'you have no permission to edit here'
+                }),403
+            )
         query = review.delete()
-        review.execute()
+        query.execute()
         return '', 204, {'location': url_for('resources.reviews.reviews')}
 
 
