@@ -14,5 +14,5 @@ python app.py
 
 using flask_restful
 
-
-@glenchiridza
+happy coding
+####@glenchiridza
