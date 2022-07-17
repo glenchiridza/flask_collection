@@ -14,6 +14,17 @@ app.register_blueprint(courses_api)
 app.register_blueprint(reviews_api, url_prefix='/api/v1')
 app.register_blueprint(users_api, url_prefix='/api/v1')
 
+limiter = Limiter(app, global_limits=[config.DEFAULT_RATE], key_func=get_ipaddr)  # key_func gets who the user is via ip address
+limiter.limit("40/day")(users_api)
+# to specify methods we want to limit, and those not specified wont be limited or controlled. In this case get is not
+# controlled or limited.
+
+limiter.limit(config.DEFAULT_RATE,per_method=True,methods=['post','put','delete'])(courses_api)
+limiter.limit(config.DEFAULT_RATE,per_method=True,methods=['post','put','delete'])(reviews_api)
+
+# limiter.exempt(courses_api)
+# limiter.exempt(reviews_api)
+
 
 @app.route('/')
 def index():

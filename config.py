@@ -2,3 +2,5 @@ DEBUG = True
 HOST = '0.0.0.0'
 PORT = 8000
 SECRET_KEY = '@#$FDG@$FGFFF$#fe#$#$232433$#FE#$#'
+
+DEFAULT_RATE = "100/hour"
