@@ -1,7 +1,7 @@
 import json
 
 from flask import Blueprint, make_response
-from flask_restful import (Resource, Api, reqparse, inputs,
+from flask_restful import (Resource, Api, reqparse,inputs,
                            fields, marshal_with, marshal, url_for)
 
 import models
@@ -38,11 +38,11 @@ class UserList(Resource):
             help='password verification is required',
             location=['form', 'json']
         )
-        super(UserList, self).__int__()
+        super().__int__()
 
     def post(self):
         args = self.reqparse.parse_args()
-        if args.get('password') == args.get('verify_password'):
+        if args['password'] == args['verify_password']:
             user = models.User.create_user(**args)
             return marshal(user, user_fields), 201
         return make_response(
