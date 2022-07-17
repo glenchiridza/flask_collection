@@ -2,6 +2,10 @@ import datetime
 from argon2 import PasswordHasher
 # peewee is an Object Relational Mapper that turns your model objects into rows in your database
 from peewee import *
+from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer,
+                         BadSignature, SignatureExpired)
+
+import config
 
 DATABASE = SqliteDatabase('courses.sqlite')
 HASHER = PasswordHasher()
@@ -31,11 +35,22 @@ class User(Model):
             raise Exception("User with that email or username already exist")
 
     @staticmethod
+    def verify_auth_token(token):
+        serializer = Serializer(config.SECRET_KEY)
+        try:
+            data = serializer.loads(token)
+        except (SignatureExpired, BadSignature):
+            return None
+        else:
+            user = User.get(User.id==data['id'])
+
+    @staticmethod
     def set_password(password):
         return HASHER.hash(password)
 
     def verify_password(self,password):
         return HASHER.verify(self.password,password)
+
 
 
 class Course(Model):
