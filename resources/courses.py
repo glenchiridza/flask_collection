@@ -97,23 +97,4 @@ class Course(Resource):
         return (add_reviews(models.Course.get(models.Course.id == id)), 200,
                 {'location': url_for('resources.courses.course', id=id)})
 
-    @auth.login_required
-    def delete(self, id):
-        query = models.Course.delete().where(models.Course.id == id)
-        query.execute()
-        return ('', 204,
-                {'locations': url_for('resources.courses.courses')})
 
-
-courses_api = Blueprint('resources.courses', __name__)
-api = Api(courses_api)
-api.add_resource(
-    CourseList,
-    '/api/v1/courses',
-    endpoint='courses'
-)
-api.add_resource(
-    Course,
-    '/api/v1/courses/<int:id>',
-    endpoint='course'
-)
